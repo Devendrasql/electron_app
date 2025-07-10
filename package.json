@@ -1,10 +1,11 @@
 {
-  "name": "battery-alarm-devendra",
+  "name": "battery-alarm-desktop",
   "version": "1.0.0",
   "description": "A desktop application for battery full charge alarm with Bluetooth.",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "dist": "electron-builder"
   },
   "keywords": [
     "Electron",
@@ -13,10 +14,43 @@
     "Bluetooth",
     "Desktop"
   ],
-  "author": "Devendra Jangid",
+  "author": "Your Name",
   "license": "MIT",
   "devDependencies": {
     "electron": "^30.0.8",
-    "electron-builder": "^26.0.12"
+    "electron-builder": "^24.13.5"
+  },
+  "build": {
+    "appId": "com.yourcompany.batteryalarm",
+    "productName": "Battery Alarm",
+    "copyright": "Copyright © 2025 ${author}",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "**/*",
+      "!node_modules/${asar}/**"
+    ],
+    "extraResources": [
+      "your_alarm_sound.mp3"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "build/icon.ico"
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "icon": "build/icon.icns"
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "icon": "build/icon.png"
+    }
   }
 }
