@@ -25,11 +25,10 @@
     "productName": "Battery Alarm",
     "copyright": "Copyright © 2025 ${author}",
     "directories": {
-      "output": "dist/"
+      "output": "dist"
     },
     "files": [
-      "**/*",
-      "!node_modules/${asar}/**"
+
     ],
     "extraResources": [
       "dhol.mp3"
@@ -38,7 +37,7 @@
       "target": [
         "nsis"
       ],
-      "icon": "build/win.ico"
+      "icon": "build/bank.ico"
     },
     "mac": {
       "target": [
