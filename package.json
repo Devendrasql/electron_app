@@ -1,6 +1,6 @@
 {
   "name": "battery-alarm-desktop",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A desktop application for battery full charge alarm with Bluetooth.",
   "main": "main.js",
   "scripts": {
