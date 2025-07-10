@@ -14,7 +14,7 @@
     "Bluetooth",
     "Desktop"
   ],
-  "author": "Your Name",
+  "author": "Devendra Jangid",
   "license": "MIT",
   "devDependencies": {
     "electron": "^30.0.8",
