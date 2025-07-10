@@ -12,56 +12,56 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #f0f2f5; /* Equivalent to bg-gray-100 */
-            color: #333; /* Equivalent to text-gray-800 */
-            padding: 16px; /* Add some padding for mobile view */
+            background-color: #E0F2F7; /* Sky blue background */
+            color: #333;
+            padding: 16px;
             box-sizing: border-box;
-            margin: 0; /* Ensure no default body margin */
+            margin: 0;
         }
         .container {
-            background-color: #ffffff; /* Equivalent to bg-white */
-            border-radius: 16px; /* Equivalent to rounded-2xl */
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Equivalent to shadow-xl */
-            padding: 32px; /* Equivalent to p-8 */
+            background-color: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 32px;
             width: 100%;
-            max-width: 400px; /* Equivalent to max-w-md */
+            max-width: 400px;
             text-align: center;
             display: flex;
             flex-direction: column;
-            gap: 24px; /* Equivalent to gap-6 */
+            gap: 24px;
         }
         h1 {
-            font-size: 30px; /* Equivalent to text-3xl */
-            font-weight: bold; /* Equivalent to font-bold */
-            color: #333; /* Equivalent to text-gray-800 */
+            font-size: 30px;
+            font-weight: bold;
+            color: #333;
         }
         .battery-icon {
             font-size: 80px;
-            color: #4CAF50; /* Green for battery */
-            margin-bottom: 16px; /* Equivalent to mb-4 */
+            color: #1A237E; /* Dark blue for battery icon */
+            margin-bottom: 16px;
         }
         .battery-level-display {
-            font-size: 20px; /* Equivalent to text-xl */
-            font-weight: 600; /* Equivalent to font-semibold */
+            font-size: 20px;
+            font-weight: 600;
         }
         .battery-level-bar {
             width: 100%;
-            background-color: #e0e0e0; /* Equivalent to bg-gray-200 */
-            border-radius: 8px; /* Equivalent to rounded-lg */
+            background-color: #e0e0e0;
+            border-radius: 8px;
             height: 20px;
             overflow: hidden;
-            margin-top: 8px; /* Equivalent to mt-2 */
+            margin-top: 8px;
         }
         .battery-fill {
             height: 100%;
-            background-color: #4CAF50;
+            background-color: #1A237E; /* Dark blue for high battery fill */
             border-radius: 8px;
             transition: width 0.5s ease-in-out;
         }
         .charging-indicator {
-            font-size: 24px; /* Equivalent to text-2xl */
-            margin-top: 10px; /* Equivalent to mt-4 */
-            color: #3f51b5; /* Blue for charging */
+            font-size: 24px;
+            margin-top: 10px;
+            color: #3f51b5;
         }
         .section-title {
             font-size: 22px;
@@ -78,25 +78,25 @@
             gap: 12px;
         }
         .btn {
-            padding: 12px 24px; /* Equivalent to p-3 px-6 */
-            border-radius: 10px; /* Equivalent to rounded-lg */
-            font-weight: 600; /* Equivalent to font-semibold */
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.1s ease;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Equivalent to shadow-md */
-            border: none; /* Ensure no default button border */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: none;
         }
         .btn-primary {
-            background-color: #4CAF50; /* Equivalent to bg-green-500 */
-            color: white; /* Equivalent to text-white */
+            background-color: #1A237E; /* Dark blue for primary buttons */
+            color: white;
         }
         .btn-primary:hover {
-            background-color: #45a049;
+            background-color: #0D47A1; /* Darker blue on hover */
             transform: translateY(-2px);
         }
         .btn-secondary {
-            background-color: #f44336; /* Equivalent to bg-red-500 */
-            color: white; /* Equivalent to text-white */
+            background-color: #f44336;
+            color: white;
         }
         .btn-secondary:hover {
             background-color: #da190b;
@@ -119,14 +119,14 @@
             transform: translateY(-2px);
         }
         .message-box {
-            background-color: #e3f2fd; /* Equivalent to bg-blue-100 */
-            border: 1px solid #90caf9; /* Equivalent to border-blue-400 */
-            color: #1565c0; /* Equivalent to text-blue-700 */
-            padding: 12px; /* Equivalent to p-3 */
-            border-radius: 8px; /* Equivalent to rounded-lg */
-            margin-top: 20px; /* Equivalent to mt-5 */
+            background-color: #e3f2fd;
+            border: 1px solid #90caf9;
+            color: #1565c0;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 20px;
             display: none;
-            font-size: 14px; /* Equivalent to text-sm */
+            font-size: 14px;
             text-align: left;
         }
         .message-box.show {
@@ -141,7 +141,7 @@
             font-size: 14px;
             color: #666;
             margin-top: 8px;
-            word-break: break-all; /* Allow long paths to wrap */
+            word-break: break-all;
         }
     </style>
 </head>
@@ -209,31 +209,20 @@
         const currentSoundFileNameSpan = document.getElementById('currentSoundFileName'); // New display
 
         // --- Global Variables ---
-        let battery = null; // Stores the battery object from Battery Status API
-        let monitoringInterval = null; // Stores the interval ID for battery monitoring
-        let alarmPlaying = false; // Flag to prevent multiple alarm plays
-        let bluetoothDevice = null; // Stores the connected Bluetooth device
-        let bluetoothCharacteristic = null; // Stores the characteristic to write to
-        let currentSettings = {}; // Stores loaded/saved settings
+        let battery = null;
+        let monitoringInterval = null;
+        let alarmPlaying = false;
+        let bluetoothDevice = null;
+        let bluetoothCharacteristic = null;
+        let currentSettings = {};
 
         // --- Bluetooth Service and Characteristic UUIDs ---
-        // IMPORTANT: Replace these with the actual UUIDs from your BLE device's firmware.
-        // You can use online UUID generators or check your device's documentation.
-        // Example: '4fafc201-1fb5-459e-8fcc-c5c9c331914b' (for a custom service)
-        // Example: 'beb5483e-36e1-4688-b7f5-ea07361b26a8' (for a custom characteristic)
-        const BLUETOOTH_SERVICE_UUID = '0000ffe0-0000-1000-8000-00805f9b34fb'; // Example: Generic BLE service (often used by HM-10)
-        const BLUETOOTH_CHARACTERISTIC_UUID = '0000ffe1-0000-1000-8000-00805f9b34fb'; // Example: Generic BLE characteristic (often used by HM-10)
+        const BLUETOOTH_SERVICE_UUID = '0000ffe0-0000-1000-8000-00805f9b34fb';
+        const BLUETOOTH_CHARACTERISTIC_UUID = '0000ffe1-0000-1000-8000-00805f9b34fb';
 
         // --- Utility Functions ---
-
-        /**
-         * Displays a message in the custom message box.
-         * @param {string} message - The message to display.
-         * @param {string} type - Type of message ('info', 'error', 'success').
-         */
         function showMessage(message, type = 'info') {
             messageBox.textContent = message;
-            // Reset classes to ensure only 'show' and type-specific classes are applied
             messageBox.className = 'message-box show';
             if (type === 'error') {
                 messageBox.classList.add('bg-red-100', 'border-red-400', 'text-red-700');
@@ -242,15 +231,12 @@
             } else {
                 messageBox.classList.add('bg-blue-100', 'border-blue-400', 'text-blue-700');
             }
-            // Hide message after a few seconds
             setTimeout(() => {
                 messageBox.classList.remove('show');
             }, 5000);
         }
 
-        /**
-         * Updates the battery status display and bar.
-         */
+        // --- Battery Monitoring Functions ---
         function updateBatteryStatus() {
             if (!battery) return;
 
@@ -258,15 +244,14 @@
             batteryLevelSpan.textContent = `${level}%`;
             batteryFill.style.width = `${level}%`;
 
-            // Update battery icon based on level and charging status
             if (battery.charging) {
                 chargingStatusDiv.textContent = 'Status: Charging...';
-                batteryIcon.textContent = '⚡'; // Charging icon
-                batteryIcon.style.color = '#3f51b5'; // Blue for charging
+                batteryIcon.textContent = '⚡';
+                batteryIcon.style.color = '#3f51b5';
             } else {
                 chargingStatusDiv.textContent = 'Status: Discharging';
-                batteryIcon.textContent = '🔋'; // Discharging icon
-                batteryIcon.style.color = '#4CAF50'; // Green for normal
+                batteryIcon.textContent = '🔋';
+                batteryIcon.style.color = '#1A237E'; /* Dark blue for battery icon when not charging */
             }
 
             // Change color of battery fill based on level
@@ -275,41 +260,30 @@
             } else if (level < 50) {
                 batteryFill.style.backgroundColor = '#ff9800'; /* Orange for medium battery */
             } else {
-                batteryFill.style.backgroundColor = '#4CAF50'; /* Green for high battery */
+                batteryFill.style.backgroundColor = '#1A237E'; /* Dark blue for high battery */
             }
 
-            // Check for full charge and charging
             if (level === 100 && battery.charging) {
                 if (!alarmPlaying) {
                     playAlarm();
-                    alarmPlaying = true; // Set flag to prevent repeated alarms
+                    alarmPlaying = true;
                     showMessage('Battery fully charged! Please unplug your device.', 'info');
                 }
-                // Attempt to send Bluetooth signal
-                sendBluetoothSignal('blink'); // Send a 'blink' command
+                sendBluetoothSignal('blink');
             } else if (level < 100 || !battery.charging) {
-                alarmPlaying = false; // Reset flag if not fully charged or not charging
-                // Optionally send an 'off' signal if battery drops below 100% while charging
-                // or if it's no longer charging.
-                sendBluetoothSignal('off'); // Send an 'off' command
+                alarmPlaying = false;
+                sendBluetoothSignal('off');
             }
         }
 
-        /**
-         * Plays the alarm sound.
-         */
         function playAlarm() {
-            // Attempt to play the sound. Browsers often require user interaction
-            // before media can play automatically.
+            alarmSound.currentTime = 0;
             alarmSound.play().catch(error => {
                 console.error("Error playing alarm sound:", error);
                 showMessage('Could not play alarm sound. Please interact with the page first (e.g., tap the screen).', 'error');
             });
         }
 
-        /**
-         * Starts monitoring the battery status.
-         */
         function startMonitoring() {
             if (!battery) {
                 showMessage('Battery API not available or not initialized.', 'error');
@@ -321,33 +295,25 @@
                 return;
             }
 
-            // Attempt to play and immediately pause a silent sound to unlock audio context
-            // This helps with browser autoplay policies.
-            alarmSound.currentTime = 0; // Reset to start
-            alarmSound.volume = 0; // Set volume to 0 for the dummy play
+            alarmSound.load();
+            alarmSound.currentTime = 0;
+            alarmSound.volume = 0;
             alarmSound.play().then(() => {
-                alarmSound.pause();
-                alarmSound.currentTime = 0; // Reset to start
-                alarmSound.volume = 1; // Restore volume for actual alarms
+                alarmSound.volume = 1;
                 console.log("Dummy audio play successful, audio context likely unlocked.");
+                showMessage('Battery monitoring started. The alarm will sound and Bluetooth signal will be sent when 100% charged.', 'info');
             }).catch(error => {
-                console.warn("Dummy audio play failed:", error);
+                console.warn("Dummy audio play failed (audio context might still be locked):", error);
                 showMessage('Warning: Audio playback might be blocked by your browser. Please ensure you have interacted with the page (e.g., tapped a button) to allow sound. The alarm may not play.', 'error');
             });
 
-
-            // Update immediately and then every 5 seconds
             updateBatteryStatus();
-            monitoringInterval = setInterval(updateBatteryStatus, 5000); // Check every 5 seconds
+            monitoringInterval = setInterval(updateBatteryStatus, 5000);
             startButton.disabled = true;
-            stopButton.disabled = false;
+            stopButton.disabled = true; // Keep stop button disabled until monitoring actually starts
             chargingStatusDiv.textContent = 'Status: Monitoring active...';
-            showMessage('Battery monitoring started. The alarm will sound and Bluetooth signal will be sent when 100% charged.', 'info');
         }
 
-        /**
-         * Stops monitoring the battery status.
-         */
         function stopMonitoring() {
             if (monitoringInterval) {
                 clearInterval(monitoringInterval);
@@ -356,44 +322,35 @@
                 stopButton.disabled = true;
                 chargingStatusDiv.textContent = 'Status: Monitoring stopped.';
                 showMessage('Battery monitoring stopped.', 'info');
-                sendBluetoothSignal('off'); // Ensure light is off when monitoring stops
+                sendBluetoothSignal('off');
             } else {
                 showMessage('Battery monitoring is not active.', 'info');
             }
         }
 
-        /**
-         * Initializes the Battery Status API.
-         */
         function initBattery() {
             if ('getBattery' in navigator) {
                 navigator.getBattery().then(function(b) {
                     battery = b;
-                    updateBatteryStatus(); // Initial update
+                    updateBatteryStatus();
 
-                    // Add event listeners for battery status changes
                     battery.addEventListener('chargingchange', updateBatteryStatus);
                     battery.addEventListener('levelchange', updateBatteryStatus);
 
-                    // Enable start button once battery API is ready
                     startButton.disabled = false;
                     showMessage('Battery API is ready. Tap "Start Battery Monitoring" to begin.', 'info');
                 }).catch(function(error) {
                     console.error("Failed to get battery information:", error);
                     showMessage('Could not access battery information. Please ensure your browser supports the Battery Status API and permissions are granted.', 'error');
-                    startButton.disabled = true; // Disable if API fails
+                    startButton.disabled = true;
                 });
             } else {
                 showMessage('Battery Status API is not supported in this browser.', 'error');
-                startButton.disabled = true; // Disable if API not supported
+                startButton.disabled = true;
             }
         }
 
         // --- Bluetooth Functions ---
-
-        /**
-         * Connects to a Bluetooth Low Energy (BLE) device.
-         */
         async function connectBluetoothDevice() {
             if (!navigator.bluetooth) {
                 showMessage('Web Bluetooth API is not supported in this browser.', 'error');
@@ -404,26 +361,20 @@
             showMessage('Searching for Bluetooth device...', 'info');
 
             try {
-                // Request Bluetooth device
                 bluetoothDevice = await navigator.bluetooth.requestDevice({
                     filters: [{ services: [BLUETOOTH_SERVICE_UUID] }],
-                    optionalServices: [BLUETOOTH_SERVICE_UUID] // Essential for accessing the service later
+                    optionalServices: [BLUETOOTH_SERVICE_UUID]
                 });
 
-                // Set up event listener for disconnect
                 bluetoothDevice.addEventListener('gattserverdisconnected', onBluetoothDisconnected);
 
-                // Connect to GATT server
                 const server = await bluetoothDevice.gatt.connect();
                 showMessage(`Connected to ${bluetoothDevice.name || 'Unknown Device'}!`, 'success');
                 bluetoothStatusSpan.textContent = `Connected to ${bluetoothDevice.name || 'Unknown Device'}`;
                 connectBluetoothButton.disabled = true;
                 disconnectBluetoothButton.disabled = false;
 
-                // Get the service
                 const service = await server.getPrimaryService(BLUETOOTH_SERVICE_UUID);
-
-                // Get the characteristic
                 bluetoothCharacteristic = await service.getCharacteristic(BLUETOOTH_CHARACTERISTIC_UUID);
                 showMessage('Bluetooth characteristic found. Ready to send commands.', 'success');
 
@@ -438,9 +389,6 @@
             }
         }
 
-        /**
-         * Handles Bluetooth device disconnection.
-         */
         function onBluetoothDisconnected(event) {
             const device = event.target;
             console.log(`Device ${device.name || 'Unknown Device'} disconnected.`);
@@ -452,9 +400,6 @@
             bluetoothCharacteristic = null;
         }
 
-        /**
-         * Disconnects from the current Bluetooth device.
-         */
         function disconnectBluetoothDevice() {
             if (bluetoothDevice && bluetoothDevice.gatt.connected) {
                 bluetoothDevice.gatt.disconnect();
@@ -469,27 +414,19 @@
             bluetoothCharacteristic = null;
         }
 
-        /**
-         * Sends a command to the connected Bluetooth device.
-         * @param {string} command - The command to send (e.g., 'blink', 'off').
-         */
         async function sendBluetoothSignal(command) {
             if (!bluetoothCharacteristic) {
-                // console.warn('No Bluetooth characteristic available to send command.');
-                return; // Silently exit if no device is connected or characteristic found
+                return;
             }
 
             try {
-                // Convert the command string to a Uint8Array
                 const encoder = new TextEncoder();
                 const data = encoder.encode(command);
                 await bluetoothCharacteristic.writeValue(data);
                 console.log(`Command "${command}" sent to Bluetooth device.`);
-                // showMessage(`Command "${command}" sent to Bluetooth device.`, 'success'); // Too verbose for continuous updates
             } catch (error) {
                 console.error('Error sending Bluetooth command:', error);
                 showMessage(`Failed to send Bluetooth command "${command}": ${error.message}`, 'error');
-                // If writing fails, it might mean the device disconnected unexpectedly
                 if (error.message.includes("disconnected")) {
                     onBluetoothDisconnected({ target: bluetoothDevice });
                 }
@@ -497,44 +434,36 @@
         }
 
         // --- Settings Functions ---
-
-        /**
-         * Loads settings from the main process and applies them.
-         */
         async function loadAndApplySettings() {
             if (window.electronAPI) {
                 currentSettings = await window.electronAPI.loadSettings();
                 let alarmSoundPath = currentSettings.alarmSoundPath;
 
                 if (!alarmSoundPath) {
-                    // If no custom path saved, get the default bundled path
                     alarmSoundPath = await window.electronAPI.getDefaultAlarmSoundPath();
                     currentSoundFileNameSpan.textContent = 'Default (your_alarm_sound.mp3)';
                 } else {
-                    // Display the file name from the path
-                    const fileName = alarmSoundPath.split(/[\\/]/).pop(); // Get filename from path
+                    const fileName = alarmSoundPath.split(/[\\/]/).pop();
                     currentSoundFileNameSpan.textContent = fileName;
                 }
                 alarmSound.src = alarmSoundPath;
                 console.log("Alarm sound path loaded and set to:", alarmSoundPath);
             } else {
-                // Fallback for non-Electron environments (e.g., direct browser open)
                 alarmSound.src = "your_alarm_sound.mp3";
                 currentSoundFileNameSpan.textContent = 'Default (your_alarm_sound.mp3)';
                 console.warn("Running outside Electron or preload.js not working. Using relative path for audio.");
             }
         }
 
-        /**
-         * Handles the click event for the "Change Alarm Sound" button.
-         */
         async function handleChangeSound() {
-            if (window.electronAPI) {
+            // This is the key check. If window.electronAPI is undefined, it means
+            // the preload script hasn't successfully injected it.
+            if (window.electronAPI && typeof window.electronAPI.openAudioFile === 'function') {
                 const filePath = await window.electronAPI.openAudioFile();
                 if (filePath) {
                     currentSettings.alarmSoundPath = filePath;
                     await window.electronAPI.saveSettings(currentSettings);
-                    alarmSound.src = filePath; // Update the audio element's source immediately
+                    alarmSound.src = filePath;
                     const fileName = filePath.split(/[\\/]/).pop();
                     currentSoundFileNameSpan.textContent = fileName;
                     showMessage(`Alarm sound changed to: ${fileName}`, 'success');
@@ -542,22 +471,26 @@
                     showMessage('No audio file selected.', 'info');
                 }
             } else {
+                // This is the error message the user is seeing.
+                console.error("window.electronAPI or openAudioFile function is not available.");
                 showMessage('File selection is only available in the desktop application.', 'error');
             }
         }
-
 
         // --- Event Listeners ---
         startButton.addEventListener('click', startMonitoring);
         stopButton.addEventListener('click', stopMonitoring);
         connectBluetoothButton.addEventListener('click', connectBluetoothDevice);
         disconnectBluetoothButton.addEventListener('click', disconnectBluetoothDevice);
-        changeSoundButton.addEventListener('click', handleChangeSound); // New event listener
+        changeSoundButton.addEventListener('click', handleChangeSound);
 
         // --- Initialization ---
         document.addEventListener('DOMContentLoaded', async () => {
-            await loadAndApplySettings(); // Load and set the alarm sound path first
-            initBattery(); // Then initialize battery monitoring
+            // Diagnostic log: Check if Electron's API is available on DOMContentLoaded
+            console.log("DOMContentLoaded fired. window.electronAPI:", !!window.electronAPI);
+
+            await loadAndApplySettings();
+            initBattery();
         });
     </script>
 </body>
