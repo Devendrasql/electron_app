@@ -1,7 +1,9 @@
 const { contextBridge, ipcRenderer } = require('electron');
-const path = require('path');
+const path = require('path'); // This is the line causing the "module not found" error
 
 console.log('[preload.js] Preload script started.');
+console.log(`[preload.js] Electron version: ${process.versions.electron}`);
+console.log(`[preload.js] Node.js version: ${process.versions.node}`);
 
 // Expose a global object 'electronAPI' to the renderer process
 contextBridge.exposeInMainWorld('electronAPI', {
