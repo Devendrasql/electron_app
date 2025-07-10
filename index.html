@@ -110,6 +110,14 @@
             background-color: #1976D2;
             transform: translateY(-2px);
         }
+        .btn-settings {
+            background-color: #607D8B; /* Grey for settings */
+            color: white;
+        }
+        .btn-settings:hover {
+            background-color: #455A64;
+            transform: translateY(-2px);
+        }
         .message-box {
             background-color: #e3f2fd; /* Equivalent to bg-blue-100 */
             border: 1px solid #90caf9; /* Equivalent to border-blue-400 */
@@ -124,13 +132,24 @@
         .message-box.show {
             display: block;
         }
+        .settings-section {
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+        .current-sound-display {
+            font-size: 14px;
+            color: #666;
+            margin-top: 8px;
+            word-break: break-all; /* Allow long paths to wrap */
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Battery Alarm</h1>
 
-        <!-- Battery Status Section --->
+        <!-- Battery Status Section -->
         <div class="section-title">Battery Status</div>
         <div class="battery-icon" id="batteryIcon">🔋</div>
         <div class="battery-level-display">
@@ -157,14 +176,20 @@
             <button id="disconnectBluetoothButton" class="btn btn-secondary" disabled>Disconnect Bluetooth Device</button>
         </div>
 
+        <!-- Settings Section -->
+        <div class="section-title">Settings</div>
+        <div class="button-group">
+            <button id="changeSoundButton" class="btn btn-settings">Change Alarm Sound</button>
+            <div class="current-sound-display">
+                Current Sound: <span id="currentSoundFileName">Default (your_alarm_sound.mp3)</span>
+            </div>
+        </div>
+
         <!-- Custom Message Box for alerts -->
         <div id="messageBox" class="message-box"></div>
 
         <!-- Audio element for the alarm sound -->
-        <!-- To use a local file, place your audio file (e.g., your_alarm_sound.mp3)
-             in the same directory as this HTML file, or in a subdirectory.
-             Then, update the 'src' attribute below with the correct relative path. -->
-        <audio id="alarmSound" src="dhol.mp3" preload="auto"></audio>
+        <audio id="alarmSound" src="" preload="auto"></audio>
     </div>
 
     <script>
@@ -180,6 +205,8 @@
         const bluetoothStatusSpan = document.getElementById('bluetoothStatus');
         const connectBluetoothButton = document.getElementById('connectBluetoothButton');
         const disconnectBluetoothButton = document.getElementById('disconnectBluetoothButton');
+        const changeSoundButton = document.getElementById('changeSoundButton'); // New button
+        const currentSoundFileNameSpan = document.getElementById('currentSoundFileName'); // New display
 
         // --- Global Variables ---
         let battery = null; // Stores the battery object from Battery Status API
@@ -187,6 +214,7 @@
         let alarmPlaying = false; // Flag to prevent multiple alarm plays
         let bluetoothDevice = null; // Stores the connected Bluetooth device
         let bluetoothCharacteristic = null; // Stores the characteristic to write to
+        let currentSettings = {}; // Stores loaded/saved settings
 
         // --- Bluetooth Service and Characteristic UUIDs ---
         // IMPORTANT: Replace these with the actual UUIDs from your BLE device's firmware.
@@ -219,8 +247,6 @@
                 messageBox.classList.remove('show');
             }, 5000);
         }
-
-        // --- Battery Monitoring Functions ---
 
         /**
          * Updates the battery status display and bar.
@@ -470,14 +496,69 @@
             }
         }
 
+        // --- Settings Functions ---
+
+        /**
+         * Loads settings from the main process and applies them.
+         */
+        async function loadAndApplySettings() {
+            if (window.electronAPI) {
+                currentSettings = await window.electronAPI.loadSettings();
+                let alarmSoundPath = currentSettings.alarmSoundPath;
+
+                if (!alarmSoundPath) {
+                    // If no custom path saved, get the default bundled path
+                    alarmSoundPath = await window.electronAPI.getDefaultAlarmSoundPath();
+                    currentSoundFileNameSpan.textContent = 'Default (your_alarm_sound.mp3)';
+                } else {
+                    // Display the file name from the path
+                    const fileName = alarmSoundPath.split(/[\\/]/).pop(); // Get filename from path
+                    currentSoundFileNameSpan.textContent = fileName;
+                }
+                alarmSound.src = alarmSoundPath;
+                console.log("Alarm sound path loaded and set to:", alarmSoundPath);
+            } else {
+                // Fallback for non-Electron environments (e.g., direct browser open)
+                alarmSound.src = "your_alarm_sound.mp3";
+                currentSoundFileNameSpan.textContent = 'Default (your_alarm_sound.mp3)';
+                console.warn("Running outside Electron or preload.js not working. Using relative path for audio.");
+            }
+        }
+
+        /**
+         * Handles the click event for the "Change Alarm Sound" button.
+         */
+        async function handleChangeSound() {
+            if (window.electronAPI) {
+                const filePath = await window.electronAPI.openAudioFile();
+                if (filePath) {
+                    currentSettings.alarmSoundPath = filePath;
+                    await window.electronAPI.saveSettings(currentSettings);
+                    alarmSound.src = filePath; // Update the audio element's source immediately
+                    const fileName = filePath.split(/[\\/]/).pop();
+                    currentSoundFileNameSpan.textContent = fileName;
+                    showMessage(`Alarm sound changed to: ${fileName}`, 'success');
+                } else {
+                    showMessage('No audio file selected.', 'info');
+                }
+            } else {
+                showMessage('File selection is only available in the desktop application.', 'error');
+            }
+        }
+
+
         // --- Event Listeners ---
         startButton.addEventListener('click', startMonitoring);
         stopButton.addEventListener('click', stopMonitoring);
         connectBluetoothButton.addEventListener('click', connectBluetoothDevice);
         disconnectBluetoothButton.addEventListener('click', disconnectBluetoothDevice);
+        changeSoundButton.addEventListener('click', handleChangeSound); // New event listener
 
         // --- Initialization ---
-        document.addEventListener('DOMContentLoaded', initBattery);
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadAndApplySettings(); // Load and set the alarm sound path first
+            initBattery(); // Then initialize battery monitoring
+        });
     </script>
 </body>
 </html>
