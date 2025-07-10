@@ -38,33 +38,42 @@ function createWindow() {
   const primaryDisplay = screen.getPrimaryDisplay();
   const { width, height } = primaryDisplay.workAreaSize;
 
+  // Log the path to preload.js before creating the window
+  const preloadScriptPath = path.join(__dirname, 'preload.js');
+  console.log(`[main.js] Attempting to load preload script from: ${preloadScriptPath}`);
+  if (!fs.existsSync(preloadScriptPath)) {
+    console.error(`[main.js] ERROR: preload.js file NOT FOUND at: ${preloadScriptPath}`);
+  }
+
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: Math.min(450, width), // Set a max width, or adapt to screen size
-    height: Math.min(700, height), // Set a max height, or adapt to screen size
-    minWidth: 350, // Minimum width
-    minHeight: 500, // Minimum height
+    width: Math.min(450, width),
+    height: Math.min(700, height),
+    minWidth: 350,
+    minHeight: 500,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: preloadScriptPath, // Use the resolved path
       nodeIntegration: false,
       contextIsolation: true,
       enableBlinkFeatures: 'WebBluetooth',
     },
     title: "Battery Alarm",
-    icon: path.join(__dirname, 'build', 'icon.png') // Ensure correct path to icon
+    icon: path.join(__dirname, 'build', 'icon.png')
   });
+
+  console.log('[main.js] BrowserWindow created.');
 
   // Load the index.html of the app.
   mainWindow.loadFile('index.html');
 
   // Open the DevTools. (Optional, for debugging)
-  // mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools(); // Uncomment this line to always open DevTools for debugging packaged app
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+  console.log('[main.js] App is ready. Creating window...');
   createWindow();
 
   app.on('activate', () => {
@@ -76,6 +85,7 @@ app.whenReady().then(() => {
 
 // Quit when all windows are closed, except on macOS.
 app.on('window-all-closed', () => {
+  console.log('[main.js] All windows closed. Quitting app.');
   if (process.platform !== 'darwin') {
     app.quit();
   }
@@ -83,29 +93,31 @@ app.on('window-all-closed', () => {
 
 // --- IPC Main Handlers ---
 
-// Handle request to open file dialog for audio
 ipcMain.handle('open-audio-file-dialog', async (event) => {
+  console.log('[main.js] Received request to open audio file dialog.');
   const result = await dialog.showOpenDialog({
     properties: ['openFile'],
     filters: [
       { name: 'Audio Files', extensions: ['mp3', 'wav', 'ogg'] }
     ]
   });
-  // Return the selected file path or null if cancelled
+  console.log(`[main.js] File dialog result: ${result.canceled ? 'Cancelled' : result.filePaths[0]}`);
   return result.canceled ? null : result.filePaths[0];
 });
 
-// Handle request to get the default alarm sound path
 ipcMain.handle('get-default-alarm-sound-path', () => {
-  return path.join(process.resourcesPath, 'your_alarm_sound.mp3');
+  const defaultPath = path.join(process.resourcesPath, 'your_alarm_sound.mp3');
+  console.log(`[main.js] Providing default alarm sound path: ${defaultPath}`);
+  return defaultPath;
 });
 
-// Handle request to save settings
 ipcMain.handle('save-settings', (event, settings) => {
+  console.log('[main.js] Received request to save settings:', settings);
   saveSettings(settings);
 });
 
-// Handle request to load settings
 ipcMain.handle('load-settings', () => {
-  return loadSettings();
+  const loadedSettings = loadSettings();
+  console.log('[main.js] Received request to load settings. Loaded:', loadedSettings);
+  return loadedSettings;
 });
