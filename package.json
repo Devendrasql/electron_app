@@ -18,7 +18,7 @@
   "license": "MIT",
   "devDependencies": {
     "electron": "^30.0.8",
-    "electron-builder": "^24.13.5"
+    "electron-builder": "^24.13.3"
   },
   "build": {
     "appId": "com.devendra.batteryalarm",
@@ -27,9 +27,7 @@
     "directories": {
       "output": "dist"
     },
-    "files": [
-
-    ],
+    "files": [],
     "extraResources": [
       "dhol.mp3"
     ],
